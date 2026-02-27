@@ -48,4 +48,56 @@
  */
 export function analyzeUPITransactions(transactions) {
   // Your code here
+  let totalCredit = 0, totalDebit = 0, netBalance, transactionCount = 0, avgTransaction, highestTransaction, categoryBreakdown = {}, freq = {}, frequee, frequentContact, allAbove100 = true, hasLargeTransaction = false, maxi = -1e9, flag = false;
+  if(Array.isArray(transactions) && transactions.length > 0){
+    for(let i=0;i<transactions.length;i++){
+      if(transactions[i].amount > 0 && (transactions[i].type.toLowerCase() === "credit" || transactions[i].type.toLowerCase() === "debit" || false)){
+        if(transactions[i].type.toLowerCase() === "credit"){
+          totalCredit += transactions[i].amount;
+        } else {
+          totalDebit += transactions[i].amount;
+        }
+        transactionCount += 1;
+        console.log(transactionCount);
+        if(transactions[i].amount >= maxi) {
+          highestTransaction = transactions[i];
+          maxi = transactions[i].amount;
+        }
+        if(categoryBreakdown.hasOwnProperty(transactions[i].category)){
+          categoryBreakdown[transactions[i].category] += transactions[i].amount;
+        } else {
+          categoryBreakdown[transactions[i].category] = transactions[i].amount;
+        }
+        if(transactions[i].amount >= 5000){
+          hasLargeTransaction = true;
+        }
+        if(freq.hasOwnProperty(transactions[i].to)){
+          freq[transactions[i].to] += 1;
+        } else {
+          freq[transactions[i].to] = 1;
+        }
+        if(transactions[i].amount <= 100){
+          allAbove100 = false;
+        }
+        flag = true;
+      }
+    }
+    if(flag){
+      netBalance = totalCredit - totalDebit;
+      avgTransaction = Math.round((totalCredit + totalDebit) / transactionCount);
+      frequee = Object.entries(freq);
+      maxi = -1e9;
+      for(let i=0;i<frequee.length;i++){
+        if(frequee[i][1] > maxi){
+          frequentContact = frequee[i][0];
+          maxi = frequee[i][1];
+        }
+      }
+      return { totalCredit: totalCredit, totalDebit: totalDebit, netBalance: netBalance, transactionCount: transactionCount, avgTransaction: avgTransaction, highestTransaction: highestTransaction, categoryBreakdown: categoryBreakdown, frequentContact: frequentContact, allAbove100: allAbove100, hasLargeTransaction: hasLargeTransaction };
+    } else {
+      return null;
+    }
+  }
+
+  return null;
 }

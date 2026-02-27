@@ -40,4 +40,41 @@
  */
 export function calculateGST(amount, category) {
   // Your code here
+  let baseAmount, gstRate, gstAmount, totalAmount;
+  if(typeof amount === 'number' && Number.isFinite(amount) && amount > 0 && typeof category === 'string'){
+    if(category.toLowerCase() === "essential"){
+      baseAmount = amount;
+      gstRate = 0;
+      gstAmount = Math.round(((baseAmount * gstRate) / 100) * 100) / 100;
+      totalAmount = baseAmount + gstAmount;
+      return { baseAmount, gstRate, gstAmount, totalAmount };
+    } else if(category.toLowerCase() === "food"){
+      baseAmount = amount;
+      gstRate = 5;
+      gstAmount = Math.round(((baseAmount * gstRate) / 100) * 100) / 100;
+      totalAmount = baseAmount + gstAmount;
+      return { baseAmount, gstRate, gstAmount, totalAmount };
+    } else if(category.toLowerCase() === "standard"){
+      baseAmount = amount;
+      gstRate = 12;
+      gstAmount = Math.round(((baseAmount * gstRate) / 100) * 100) / 100;
+      totalAmount = baseAmount + gstAmount;
+      return { baseAmount, gstRate, gstAmount, totalAmount };
+    } else if(category.toLowerCase() === "electronics"){
+      baseAmount = amount;
+      gstRate = 18;
+      gstAmount = Math.round(((baseAmount * gstRate) / 100) * 100) / 100;
+      totalAmount = baseAmount + gstAmount;
+      return { baseAmount, gstRate, gstAmount, totalAmount };
+    } else if(category.toLowerCase() === "luxury"){
+      baseAmount = amount;
+      gstRate = 28;
+      gstAmount = Math.round(((baseAmount * gstRate) / 100) * 100) / 100;
+      totalAmount = baseAmount + gstAmount;
+      return { baseAmount, gstRate, gstAmount, totalAmount };
+    } else {
+      return null;
+    }
+  }
+  return null;
 }

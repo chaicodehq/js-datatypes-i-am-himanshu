@@ -63,4 +63,58 @@
  */
 export function validateForm(formData) {
   // Your code here
+  let isValid = true, name, email, phone, age, pincode, state, agreeTerms, stateNow;
+  if(typeof formData === 'object' && formData !== null){
+    if(!(formData.name.trim() !== "" && formData.name.trim().length >= 2 && formData.name.trim().length <= 50)){
+      name = "Name must be 2-50 characters";
+      isValid = false;
+    }
+
+    if(!(formData.email.includes("@") && formData.email.includes(".") && formData.email.indexOf("@") === formData.email.lastIndexOf("@"))){
+      email = "Invalid email format";
+      isValid = false;
+    }
+
+    if(typeof formData.phone === 'string' && formData.phone.length === 10 && formData.phone[0] >= "6"){
+      for(const ph of formData.phone){
+        if(!(ph >= "0" && ph <= "9")){
+          phone = "Invalid Indian phone number";
+          isValid = false;
+        }
+      }
+    } else{
+      phone = "Invalid Indian phone number";
+      isValid = false;
+    }
+
+    if(!(Number.parseInt(formData.age) !== NaN && Number.parseInt(formData.age) === Number.parseFloat (formData.age) && Number.parseInt(formData.age) >= 16 && Number.parseInt(formData.age) <= 100)){
+      age = "Age must be an integer between 16 and 100";
+      isValid = false;
+    }
+
+    if((typeof formData.pincode === 'string' && formData.pincode.length === 6 && formData.pincode.charAt(0) !== "0")) {
+      for(const p of formData.pincode){
+        if(!(p >= "0" && p<= "9")) {
+          pincode = "Invalid Indian pincode";
+          isValid = false;
+        }
+      }
+    } else{
+      pincode = "Invalid Indian pincode";
+      isValid = false;
+    }
+
+    stateNow = formData?.state ?? "";
+    if(!(stateNow !== "")){
+      state = "State is required";
+      isValid = false;
+    }
+
+    if(Boolean(formData.agreeTerms) === false){
+      agreeTerms = "Must agree to terms";
+      isValid = false;
+    }
+
+    return { isValid: isValid, errors: { name: name, email: email, phone: phone, age: age, pincode: pincode, state: state, agreeTerms: agreeTerms }}
+  }
 }
